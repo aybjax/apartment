@@ -7,7 +7,7 @@
                 Зарегистрируйся!
             </v-card-title>
 
-            <v-card-content>
+            <v-card-text>
                 <v-form v-model="valid" class="pa-10" ref="form">
                     <v-text-field
                         v-model="username"
@@ -29,8 +29,8 @@
                         required
                     ></v-text-field>
                 </v-form>
-            </v-card-content>
-            <v-card-action class="d-flex justify-space-around align-center pb-3">
+            </v-card-text>
+            <v-card-actions class="d-flex justify-space-around align-center pb-3">
                 <v-btn large @click="submit">
                     <v-icon left>
                         login
@@ -47,7 +47,7 @@
                         назад
                     </span>
                 </v-btn>
-            </v-card-action>
+            </v-card-actions>
         </v-card>
     </v-container>
 </template>

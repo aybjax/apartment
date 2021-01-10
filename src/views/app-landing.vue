@@ -61,9 +61,9 @@
       </v-col>
     </v-row>
         <!-- <v-card>
-          <v-card-content>
+          <v-card-text>
               
-          </v-card-content>
+          </v-card-text>
         </v-card> -->
   </v-container>
 </template>

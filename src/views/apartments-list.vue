@@ -1,7 +1,13 @@
 <template>
     <v-container class="mt-16">
-        <v-card>
-        
+        <v-card elevation="4" shaped outlined max-width="800px"
+                class="pa-6 mx-auto accent">
+            <v-card-title >
+                <div class="mx-auto white--text text-h4">
+                    {{apartments[0].title}}
+                </div>
+            </v-card-title>
+            
         </v-card>
     </v-container>
 </template>
