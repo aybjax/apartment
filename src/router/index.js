@@ -3,24 +3,30 @@ import VueRouter from 'vue-router'
 import AppLanding from '../views/app-landing'
 import LoginPage from '../views/login-page'
 import RegisterPage from '@/views/register-page'
+import ApartmentsList from '@/views/apartments-list'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/apartments',
+    name: 'apartments-list',
+    component: ApartmentsList,
+  },
+  {
     path: '/login',
     name: 'login-page',
-    component: LoginPage
+    component: LoginPage,
   },
   {
     path: '/register',
     name: 'register-page',
-    component: RegisterPage
+    component: RegisterPage,
   },
   {
     path: '/',
     name: 'landing-page',
-    component: AppLanding
+    component: AppLanding,
   },
   // {
   //   path: '/about',
