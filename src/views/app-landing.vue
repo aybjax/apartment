@@ -15,8 +15,13 @@
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, nisi, fugit tenetur magni reprehenderit saepe incidunt cum labore fuga suscipit corrupti rem. Sit ad sint dolorum quasi libero nihil omnis.
             </div>
         </v-row>
+        <v-divider class="white my-6">
+        </v-divider>
         <v-row class="pa-4">
-            <v-col class="d-flex justify-center">
+            <v-col class="d-flex flex-column align-center justify-space-between">
+              <div class="text-h6 mb-6">
+                Уже зарегистрированы?
+              </div>
               <v-btn color="success" large>
                 <v-icon
                   left
@@ -29,7 +34,10 @@
                 </div>
               </v-btn>
             </v-col>
-            <v-col class="d-flex justify-center">
+            <v-col class="d-flex flex-column align-center justify-space-between">
+              <div class="text-h6 mb-6">
+                Нет аккаунта?
+              </div>
               <v-btn color="success" large>
                 <span right class="white--text">
                   Register
@@ -46,8 +54,8 @@
       </v-col>
       <v-col class="d-flex justify-center">
         <v-img
-          max-height="250px"
-          max-width="300px"
+          max-height="300px"
+          max-width="400px"
           src="https://picsum.photos/id/11/500/300"
         ></v-img>
       </v-col>
