@@ -22,7 +22,7 @@
               <div class="text-h6 mb-6">
                 Уже зарегистрированы?
               </div>
-              <v-btn color="success" large>
+              <v-btn color="success" large router :to="{name: 'login-page'}">
                 <v-icon
                   left
                   color="white"
@@ -30,7 +30,7 @@
                   login
                 </v-icon>
                 <div class="white--text">
-                  Login
+                  зайти
                 </div>
               </v-btn>
             </v-col>
@@ -38,9 +38,9 @@
               <div class="text-h6 mb-6">
                 Нет аккаунта?
               </div>
-              <v-btn color="success" large>
+              <v-btn color="success" large router :to="{name: 'register-page'}">
                 <span right class="white--text">
-                  Register
+                  регистрироваться
                 </span>
                 <v-icon
                   right
@@ -56,7 +56,7 @@
         <v-img
           max-height="300px"
           max-width="400px"
-          src="https://picsum.photos/id/11/500/300"
+          :src="require('@/assets/images/landing-image.jpeg')"
         ></v-img>
       </v-col>
     </v-row>

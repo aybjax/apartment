@@ -1,10 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AppLanding from '../views/app-landing'
+import LoginPage from '../views/login-page'
+import RegisterPage from '@/views/register-page'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/login',
+    name: 'login-page',
+    component: LoginPage
+  },
+  {
+    path: '/register',
+    name: 'register-page',
+    component: RegisterPage
+  },
   {
     path: '/',
     name: 'landing-page',
