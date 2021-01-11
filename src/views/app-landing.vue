@@ -60,16 +60,10 @@
         ></v-img>
       </v-col>
     </v-row>
-        <!-- <v-card>
-          <v-card-text>
-              
-          </v-card-text>
-        </v-card> -->
   </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
   name: 'app-landing',
