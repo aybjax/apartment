@@ -4,14 +4,34 @@ import AppLanding from '../views/app-landing'
 import LoginPage from '../views/login-page'
 import RegisterPage from '@/views/register-page'
 import ApartmentsList from '@/views/apartments-list'
+import ApartmentDetail from '@/views/apartment-detail'
+import NotFound from '@/views/not-found'
+import UserProfile from '@/views/user-profile'
+import CreateApartment from '@/views/create-apartment'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/apartment',
+    name: 'create-apartment',
+    component: CreateApartment,
+  },
+  {
+    path: '/apartment/:id',
+    name: 'apartment-detail',
+    props: true,
+    component: ApartmentDetail,
+  },
+  {
     path: '/apartments',
     name: 'apartments-list',
     component: ApartmentsList,
+  },
+  {
+    path: '/user/:id',
+    name: 'user-info',
+    component: UserProfile,
   },
   {
     path: '/login',
@@ -22,6 +42,11 @@ const routes = [
     path: '/register',
     name: 'register-page',
     component: RegisterPage,
+  },
+  {
+    path: '/404-not-found',
+    name: '404-not-found',
+    component: NotFound,
   },
   {
     path: '/',

@@ -8,7 +8,7 @@
             </v-card-title>
 
             <v-card-text>
-                <v-form v-model="valid" class="pa-10" ref="form">
+                <v-form class="pa-10" ref="form">
                     <v-text-field
                         v-model="email"
                         :rules="emailRules"
@@ -83,7 +83,28 @@ export default {
                 return
             }
 
-            console.log(`${this.email} and ${this.password}`)
+            this.sendData()
+        },
+        sendData(){
+            fetch('http://localhost:3000', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: this.email,
+                    password: this.password,
+                })
+            })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     }
 }

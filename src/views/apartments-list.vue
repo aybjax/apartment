@@ -1,13 +1,80 @@
 <template>
-    <v-container class="mt-16">
-        <v-card elevation="4" shaped outlined max-width="800px"
-                class="pa-6 mx-auto accent">
+    <v-container>
+        <v-card elevation="4" outlined max-width="600px"
+                class="pa-6 mt-16 mx-auto accent"
+            v-for="apartment in apartments" :key="apartment.id"
+        >
             <v-card-title >
                 <div class="mx-auto white--text text-h4">
-                    {{apartments[0].title}}
+                    {{apartment.title}}
                 </div>
             </v-card-title>
-            
+            <v-card-text>
+                <v-row>
+                    <v-carousel
+                    cycle
+                    height="400"
+                    hide-delimiter-background
+                    show-arrows-on-hover
+                    >
+                        <v-carousel-item
+                        v-for="(href, ind, nbr) in apartment.images"
+                        :key="href + ind + nbr"
+                        >
+                            <v-row
+                                class="fill-height"
+                                align="center"
+                                justify="center"
+                                >
+                                <v-img max-width="800"
+                                    :src="href"
+                                    ></v-img>
+                            </v-row>
+                        </v-carousel-item>
+                    </v-carousel>
+                </v-row>
+
+                <v-row>
+                    <v-divider class="my-8 white"></v-divider>
+                </v-row>
+
+                <v-row>
+                    <div class="overflow-hide text-body-1 white--text text-truncate">
+                        {{apartment.description}}
+                    </div>
+                </v-row>
+
+                <v-row>
+                    <v-divider class="my-8 white"></v-divider>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <div class="white--text text-subheading-1">
+                            Адрес:
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col offset="1">
+                        <div class="white--text text-body-1">
+                            {{apartment.street}} {{apartment.home}}
+                        </div>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col>
+                        <v-btn block router :to="{name:'apartment-detail', params:{id:apartment.id}}">
+                            <div class="text-button">
+                                Посмотреть подробнее
+                            </div>
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                
+            </v-card-text>
         </v-card>
     </v-container>
 </template>
@@ -16,12 +83,13 @@
 <script>
 const apartments = [
     {
+        id: 1,
         title: 'title1',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.eApH4qt14tLPes-6s4wL2AHaE7%26pid%3DApi&f=1",
         ],
-        description: 'description1',
+        description: 'description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 description1 ',
         price: 1,
         street: 'street1',
         home: 'home1',
@@ -31,6 +99,7 @@ const apartments = [
         },
     },
     {
+        id: 2,
         title: 'title2',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
@@ -46,6 +115,7 @@ const apartments = [
         },
     },
     {
+        id: 3,
         title: 'title3',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
@@ -61,6 +131,7 @@ const apartments = [
         },
     },
     {
+        id: 4,
         title: 'title4',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
@@ -76,6 +147,7 @@ const apartments = [
         },
     },
     {
+        id: 5,
         title: 'title5',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
@@ -91,6 +163,7 @@ const apartments = [
         },
     },
     {
+        id: 6,
         title: 'title6',
         images: [
             "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.82IF_H5GwzuSS3dfslXBvQHaDH%26pid%3DApi&f=1",
@@ -112,6 +185,16 @@ export default {
         return {
             apartments,
         }
-    }
+    },
 }
+
+export {apartments}
 </script>
+
+<style scoped>
+div.overflow-hide {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+</style>

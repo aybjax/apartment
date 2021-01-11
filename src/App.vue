@@ -1,16 +1,19 @@
 <template>
   <v-app>
     <v-app-bar
-      app
       color="primary"
       dark
     >
       <div class="d-flex align-center">
         <v-app-bar-title>
           <v-app-bar-nav-icon>
-            <v-icon large>
-              home
-            </v-icon>
+            <v-btn small fab color="primary" depressed
+              router :to="{name:'landing-page'}"
+            >
+              <v-icon large>
+                home
+              </v-icon>
+            </v-btn>
           </v-app-bar-nav-icon>
         </v-app-bar-title>
       </div>
@@ -24,6 +27,16 @@
         <router-view></router-view>
       </transition>
     </v-main>
+    
+    <v-footer color="primary" class="justify-center mt-10">
+      <v-spacer></v-spacer>
+      <v-col
+        class="text-center"
+        cols="12"
+      >
+        <div class="white--text text-h6"> Develop with &copy;aybjax</div>
+      </v-col>
+    </v-footer>
   </v-app>
 </template>
 
