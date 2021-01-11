@@ -11,7 +11,7 @@
 
                                     <horizontal-line></horizontal-line>
 
-            <card-or-col :full="full" :text="description" :truncate="true">
+            <card-or-col :full="full" :text="description" truncate>
                 Описание
             </card-or-col>
 
@@ -61,10 +61,41 @@ export default {
         CardOrCol,
         ImageCarousel,
     },
-    props: [
-        'title', 'images', 'description', 'street', 'home', 'apartment', 'id',
-        'full', 'price'
-    ],
+    props: {
+        title: {
+            type: String,
+            required: true,
+        },
+        images: {
+            type: Array,
+        },
+        description: {
+            type: String,
+            required: true,
+        },
+        street: {
+            type: String,
+            required: true,
+        },
+        home: {
+            type: String,
+            required: true,
+        },
+        apartment: {
+            type: String,
+            required: true,
+        },
+        id: {
+            type: Number,
+        },
+        full: {
+            type: Boolean,
+        },
+        price: {
+            type: Number,
+            required: true,
+        }
+    },
     computed: {
         address(){
             if(this.full) {

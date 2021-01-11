@@ -22,8 +22,9 @@
                         accept="image/*"
                         @change="onFileChangeForPreview"
                         hide-input
-                        prepend-icon="add"
+                        prepend-icon="photo_library"
                         v-if="imageList.length < 4"
+                        :rules="[additionalValidation]"
                     ></v-file-input>
 
                     <v-container class="d-flex justify-space-between align-baseline my-10">
@@ -55,6 +56,7 @@
                         auto-grow
                         :hint="`не более ${descriptionMaxLength} слов`"
                         validate-on-blur
+                        counter
                     ></v-textarea>
                     <v-text-field
                         type="number"
@@ -107,11 +109,21 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+
+        <overlay-image :img="img" :imageOverlay="imageOverlay"
+            :cancelImage="cancelImage" :closeOverlay="closeOverlay"
+        ></overlay-image>
     </v-container>
 </template>
 
 <script>
+import FormMixin from '@/mixins/form'
+import imageFieldMixin from '@/mixins/imageField'
+
 export default {
+    mixins: [
+        FormMixin, imageFieldMixin
+    ],
     data(){
         return {
             title: '',
@@ -123,76 +135,27 @@ export default {
             home: '',
             apartment: '',
             imageList: [],
-            notEmptyRules: [
-                v => !!v || "Поле обязательна для заполнения",
-            ],
-            moreOrLessRules: [
-                v => v.split(/\s/).length <= this.descriptionMaxLength || `не более ${this.descriptionMaxLength} слов`,
-                v => !!v || "Поле обязательна для заполнения",
-            ],
-            isIntegerRules: [
-                v => !!v || "Поле обязательна для заполнения",
-                v => v === parseInt(v).toString() || "Цена должно быть целым числом",
-            ]
         }
     },
     methods: {
-        submit(){
-            if ( !(this.$refs.form.validate()) || this.imageList.length === 0 ) {
-                return
-            }
-
-            this.sendData()
-        },
-        onFileChangeForPreview(file) {
-            if(!file) {
-                return
-            }
-            const img = {
-                name: file.name,
-                size: file.size,
-                mod: file.lastModified,
-                file,
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                img.url = reader.result
-                this.imageList.push(img)
-            }
-
-            reader.readAsDataURL(file)
-        },
-        deleteImg(ind) {
-            this.imageList.splice(ind, 1)
-        },
-        sendData(){
-            const form = new FormData()
-            form.append('title', this.title)
-            form.append('description', this.description)
-            form.append('price', this.priceInt)
-            form.append('street', this.street)
-            form.append('home', this.home)
-            form.append('apartment', this.apartment)
+        prepareForm(){
+            this.form = new FormData()
+            this.form.append('title', this.title)
+            this.form.append('description', this.description)
+            this.form.append('price', this.priceInt)
+            this.form.append('street', this.street)
+            this.form.append('home', this.home)
+            this.form.append('apartment', this.apartment)
             this.imageList.forEach(img => {
-                form.append('image', img.file)
+                this.form.append('image', img.file)
             })
-            
+        },
+        additionalValidation(){
+            if (this.imageList.length !== 0) {
+                return true
+            }
 
-            fetch('http://localhost:3000', {
-                method: 'POST',
-                body: form
-            })
-            .then(res => {
-                return res.json()
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
+            return "pick and image"
         }
     }
 }

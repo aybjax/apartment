@@ -30,9 +30,20 @@
 
 <script>
 export default {
-    props: [
-        "full", "text", "truncate"
-    ],
+    // props: [
+    //     "full", "text", "truncate"
+    // ],
+    props: {
+        full: {
+            type: Boolean,
+        },
+        text: {
+            type: String,
+        },
+        truncate: {
+            type: Boolean,
+        }
+    },
     computed: {
         offset(){
             if(this.truncate) {

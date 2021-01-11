@@ -63,33 +63,14 @@
                             prepend-icon="add_a_photo"
                             hide-input
                         ></v-file-input>
-
-                        <v-card
-                            height="200"
-                            width="200"
-                            class="secondary d-flex flex-column pa-2"
+                        
+                        <image-card
                             v-if="!imageOverlay && !!img"
-                        >
-                            <v-img max-height="140" max-width="200"
-                                :src="img.url"
-                            >
-                            </v-img>
-                            <v-card-actions class="mt-auto">
-                                <v-container fluid class="d-flex justify-center pa-0">
-                                    <v-btn
-                                        color="error"
-                                        @click="cancelImage"
-                                    >
-                                        <v-icon large>
-                                            delete_forever
-                                        </v-icon>
-                                    </v-btn>
-
-                                </v-container>
-                            </v-card-actions>
-                        </v-card>
-                        </v-container>
-
+                            :img="img" :cancelImage="cancelImage"
+                            :width="200"
+                        ></image-card>
+                    
+                    </v-container>
                 </v-form>
             </v-card-text>
             <v-card-actions class="d-flex justify-space-around align-center pb-3">
@@ -112,170 +93,55 @@
             </v-card-actions>
         </v-card>
 
-
-        <v-overlay
-            :value="imageOverlay"
-        >
-            <v-card
-                height="400"
-                width="400"
-                class="secondary d-flex flex-column pa-2"
-                v-if="!!img"
-            >
-                <v-img max-height="340" max-width="400"
-                    :src="img.url"
-                >
-                </v-img>
-                <v-card-actions class="mt-auto">
-                    <v-container fluid class="d-flex justify-space-between pa-0">
-                        <v-btn
-                            color="success"
-                            @click="imageOverlay = false"
-                        >
-                            <v-icon small left>
-                                thumb_up
-                            </v-icon>
-                            Нравиться
-                        </v-btn>
-
-                        <v-btn
-                            color="error"
-                            @click="cancelImage"
-                        >
-                            убрать
-                            <v-icon small right>
-                                delete_forever
-                            </v-icon>
-                        </v-btn>
-
-                    </v-container>
-                </v-card-actions>
-            </v-card>
-        </v-overlay>
+        <overlay-image :img="img" :imageOverlay="imageOverlay"
+            :cancelImage="cancelImage" :closeOverlay="closeOverlay"
+            :width="400"
+        ></overlay-image>
 
     </v-container>
 </template>
 
 <script>
-const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/
-const emailCheck = (email) => (
-    emailRegex.test(email) 
-    || "Введите правильный e-mail"
-)
+import OverlayImage from '@/components/form-image/overlay-image.vue'
+import ImageCard from '@/components/form-image/image-card.vue'
 
-const phoneRegex = /^[0-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}$/
-
-const passwordCheck = [
-    pswd => !!pswd || "Введите пароль!",
-    pswd => /[a-z]/.test(pswd) || "Пароль должен содержать минимум одну строчную латинскую букву",
-    pswd => /[A-Z]/.test(pswd) || "Пароль должен содержать минимум одну заглавную латинскую букву",
-    pswd => /[0-9]/.test(pswd) || "Пароль должен содержать минимум одну цифру",
-    pswd => pswd.length >= 6 || "Пароль должен содержать не меньше 6 букв",
-]
+import FormMixin from '@/mixins/form'
+import imageFieldMixin from '@/mixins/imageField'
 
 export default {
+    mixins: [
+        FormMixin, imageFieldMixin
+    ],
+    components: {
+        OverlayImage,
+        ImageCard,
+    },
     data(){
         return {
-            imageOverlay: false,
-
-            valid: false,
+            form: null,
             username: '',
             email: '',
             phoneInput: '',
-            phoneNbr: '',
+            phone: '',
             prefix: '',
-            img: null,
+            imageList: [],
             password: '',
             password2: '',
-            usernameRules: [
-                v => !!v || "Поле не должно быть пустым!",
-            ],
-            emailRules: [
-                v => !!v || "Введите e-mail!",
-                emailCheck,
-            ],
-            phoneRules: [
-                (phoneInput) => {
-                    const isValid = phoneRegex.test(phoneInput) 
-
-                    if(isValid) {
-                        this.phoneNbr = "8-7" + phoneInput
-                        return true
-                    }
-
-                    this.phoneNbr = ""
-
-                    return "Введите номер сотового как указано на примере"
-                }
-            ],
-            passwordRules: [
-                ...passwordCheck,
-            ],
-            passwordRules2: [
-                ...passwordCheck,
-                v => v === this.password || "Пароли должны быть одинакое",
-            ],
         }
     },
     methods: {
-        submit(){
-            if ( !(this.$refs.form.validate()) ) {
-                return
-            }
+        prepareForm() {
+            this.form = new FormData()
+            this.form.append('username', this.username)
+            this.form.append('phone', this.phone)
+            this.form.append('email', this.email)
+            this.form.append('password', this.password)
 
-            this.sendData()
-        },
-        onFileChangeForPreview(file) {
-            if(!file) {
-                return
-            }
-            this.img = {
-                name: file.name,
-                size: file.size,
-                mod: file.lastModified,
-                file,
-            }
-
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                this.img.url = reader.result
-                this.imageOverlay = true
-            }
-
-            reader.readAsDataURL(file)
-        },
-        cancelImage(){
-            this.imageOverlay = false
-            this.img = null
-        },
-        sendData(){
-            console.log(`${this.username}: ${this.phoneNbr} and ${this.email} and ${this.password}`)
-            const form = new FormData()
-            form.append('username', this.username)
-            form.append('phone', this.phoneNbr)
-            form.append('email', this.email)
-            form.append('password', this.password)
-            
             if(this.img)
             {
-                form.append('image', this.img.file)
+                this.form.append('image', this.img.file)
             }
-
-            fetch('http://localhost:3000', {
-                method: 'POST',
-                body: form
-            })
-            .then(res => {
-                return res.json()
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
-    }
+        },
+    },
 }
 </script>

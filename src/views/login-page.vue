@@ -48,64 +48,28 @@
 </template>
 
 <script>
-const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-]+$/
-const emailCheck = (email) => (
-    emailRegex.test(email) 
-    || "Введите правильный e-mail"
-)
-
-const passwordCheck = [
-    pswd => !!pswd || "Введите пароль!",
-    pswd => /[a-z]/.test(pswd) || "Пароль должен содержать минимум одну строчную латинскую букву",
-    pswd => /[A-Z]/.test(pswd) || "Пароль должен содержать минимум одну заглавную латинскую букву",
-    pswd => /[0-9]/.test(pswd) || "Пароль должен содержать минимум одну цифру",
-    pswd => pswd.length >= 6 || "Пароль должен содержать не меньше 6 букв",
-]
+import FormMixin from '@/mixins/form'
 
 export default {
+    mixins: [
+        FormMixin,
+    ],
     data(){
         return {
-            valid: false,
+            form: null,
             email: '',
             password: '',
-            emailRules: [
-                v => !!v || "Введите e-mail!",
-                emailCheck,
-            ],
-            passwordRules: [
-                ...passwordCheck,
-            ]
         }
     },
     methods: {
-        submit(){
-            if ( !(this.$refs.form.validate()) ) {
-                return
-            }
-
-            this.sendData()
-        },
-        sendData(){
-            fetch('http://localhost:3000', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+        prepareForm(){
+            this.form = JSON.stringify({
                     email: this.email,
                     password: this.password,
                 })
-            })
-            .then(res => {
-                return res.json()
-            })
-            .then(data => {
-                console.log(data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-        }
+                
+            this.headers['Content-Type'] = 'application/json'
+        },
     }
 }
 </script>

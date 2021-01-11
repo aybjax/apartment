@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <apartment-card  v-if="apartment" v-bind="apartment" :full="true"
+        <apartment-card  v-if="apartment" v-bind="apartment" full
         >
             <template #expansion>
                 <user-expansion-body
