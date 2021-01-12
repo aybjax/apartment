@@ -110,7 +110,7 @@
             </v-card-actions>
         </v-card>
 
-        <overlay-image :img="img" :imageOverlay="imageOverlay"
+        <overlay-image :img="img" :imageOverlay="imageOverlay" :width="400"
             :cancelImage="cancelImage" :closeOverlay="closeOverlay"
         ></overlay-image>
     </v-container>
@@ -118,12 +118,16 @@
 
 <script>
 import FormMixin from '@/mixins/form'
-import imageFieldMixin from '@/mixins/imageField'
+import ImageFieldMixin from '@/mixins/imageField'
+import OverlayImage from '@/components/form-image/overlay-image'
 
 export default {
     mixins: [
-        FormMixin, imageFieldMixin
+        FormMixin, ImageFieldMixin
     ],
+    components: {
+        OverlayImage
+    },
     data(){
         return {
             title: '',
@@ -135,6 +139,7 @@ export default {
             home: '',
             apartment: '',
             imageList: [],
+            url: 'http://localhost/api/register-apartment',
         }
     },
     methods: {
@@ -147,7 +152,7 @@ export default {
             this.form.append('home', this.home)
             this.form.append('apartment', this.apartment)
             this.imageList.forEach(img => {
-                this.form.append('image', img.file)
+                this.form.append('image[]', img.file)
             })
         },
         additionalValidation(){

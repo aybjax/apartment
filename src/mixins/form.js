@@ -62,13 +62,18 @@ export default {
 
             console.log(this.form)
 
-            fetch('http://localhost:3000', {
+            console.log(this.url)
+
+            fetch(this.url, {
                 method: 'POST',
                 headers: this.headers,
                 body: this.form,
             })
             .then(res => {
-                return res.json()
+                if(res.ok)
+                    return res.json()
+                
+                return res.statusText
             })
             .then(data => {
                 console.log(data)

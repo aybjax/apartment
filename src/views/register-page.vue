@@ -17,6 +17,20 @@
                         validate-on-blur
                     ></v-text-field>
                     <v-text-field
+                        v-model="firstname"
+                        :rules="usernameRules"
+                        label="Ваше имя"
+                        required
+                        validate-on-blur
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="lastname"
+                        :rules="usernameRules"
+                        label="Ваше фамилия"
+                        required
+                        validate-on-blur
+                    ></v-text-field>
+                    <v-text-field
                         v-model="email"
                         :rules="emailRules"
                         label="Введите e-mail адрес"
@@ -120,6 +134,8 @@ export default {
         return {
             form: null,
             username: '',
+            firstname: '',
+            lastname: '',
             email: '',
             phoneInput: '',
             phone: '',
@@ -127,12 +143,15 @@ export default {
             imageList: [],
             password: '',
             password2: '',
+            url: 'http://localhost/api/register',
         }
     },
     methods: {
         prepareForm() {
             this.form = new FormData()
             this.form.append('username', this.username)
+            this.form.append('firstname', this.firstname)
+            this.form.append('lastname', this.lastname)
             this.form.append('phone', this.phone)
             this.form.append('email', this.email)
             this.form.append('password', this.password)

@@ -59,6 +59,7 @@ export default {
             form: null,
             email: '',
             password: '',
+            url: 'http://localhost/api/register',
         }
     },
     methods: {

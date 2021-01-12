@@ -5,7 +5,7 @@
         <image-card
             v-if="!!img" :img="img" :cancelImage="cancelImage"
             :closeOverlay="closeOverlay"
-            :width="400"
+            :width="width"
         ></image-card>
     </v-overlay>
 </template>
