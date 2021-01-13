@@ -59,7 +59,7 @@ export default {
             form: null,
             email: '',
             password: '',
-            url: 'http://localhost/api/register',
+            url: 'http://localhost/api/login',
         }
     },
     methods: {
@@ -68,7 +68,6 @@ export default {
                     email: this.email,
                     password: this.password,
                 })
-                
             this.headers['Content-Type'] = 'application/json'
         },
     }
