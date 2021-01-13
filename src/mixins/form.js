@@ -76,11 +76,14 @@ export default {
                 return res.statusText
             })
             .then(data => {
-                console.log(data)
+                this.successFnx(data)
             })
             .catch(err => {
                 console.log(err)
             })
+        },
+        successFnx(resposeBody){
+            console.log(resposeBody)
         },
     }
 }

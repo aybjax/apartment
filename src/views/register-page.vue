@@ -161,6 +161,9 @@ export default {
                 this.form.append('image', this.img.file)
             }
         },
+        successFnx(){
+            this.$router.push({name:'login-page'})
+        },
     },
 }
 </script>
