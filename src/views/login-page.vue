@@ -7,6 +7,9 @@
                 Зайдите на сайт
             </v-card-title>
 
+            <h1> {{isAuth ? 'auth' : 'not auth'}} </h1>
+            <h1> {{ name }} </h1>
+
             <v-card-text>
                 <v-form class="pa-10" ref="form">
                     <v-text-field
@@ -49,6 +52,7 @@
 
 <script>
 import FormMixin from '@/mixins/form'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     mixins: [
@@ -62,13 +66,36 @@ export default {
             url: 'http://localhost/api/login',
         }
     },
+    computed: {
+        ...mapGetters('user', ['name']),
+        ...mapGetters('auth', ['token', 'isAuth']),
+    },
     methods: {
+        ...mapActions([
+            'auth/setAuth',
+        ]),
         prepareForm(){
             this.form = JSON.stringify({
                     email: this.email,
                     password: this.password,
                 })
             this.headers['Content-Type'] = 'application/json'
+        },
+        sendData(){
+            this.prepareForm()
+
+            this['auth/setAuth']({
+                body: this.form,
+                headers: this.headers,
+            })
+            .then(msg => {
+                if(msg === 'ok'){
+                    console.log(msg)
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
         },
     }
 }

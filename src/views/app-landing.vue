@@ -18,38 +18,15 @@
         <v-divider class="white my-6">
         </v-divider>
         <v-row class="pa-4">
-            <v-col class="d-flex flex-column align-center justify-space-between">
-              <div class="text-h6 mb-6">
-                Уже зарегистрированы?
-              </div>
-              <v-btn color="success" large router :to="{name: 'login-page'}">
-                <v-icon
-                  left
-                  color="white"
-                >
-                  login
-                </v-icon>
-                <div class="white--text">
-                  зайти
-                </div>
-              </v-btn>
-            </v-col>
-            <v-col class="d-flex flex-column align-center justify-space-between">
-              <div class="text-h6 mb-6">
-                Нет аккаунта?
-              </div>
-              <v-btn color="success" large router :to="{name: 'register-page'}">
-                <span right class="white--text">
-                  регистрироваться
-                </span>
-                <v-icon
-                  right
-                  color="white"
-                >
-                  control_point
-                </v-icon>
-              </v-btn>
-            </v-col>
+            <landing-links v-if="!isAuth" question="Уже зарегистрированы?"
+              icon="login" text="Зайти" :to="{name: 'login-page'}"></landing-links>
+
+            <landing-links v-if="!isAuth" question="Нет аккаунта?"
+              icon="control_point" text="регистрироваться" :to="{name: 'register-page'}"></landing-links>
+            
+            <landing-links v-if="isAuth" question="Готов к поиску?"
+              icon="location_city" text="Найти квартиру" :to="{name: 'apartments-list'}"></landing-links>
+
         </v-row>
       </v-col>
       <v-col class="d-flex justify-center">
@@ -64,10 +41,16 @@
 </template>
 
 <script>
+import LandingLinks from '@/components/app-landing/landing-links'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'app-landing',
   components: {
+    LandingLinks
+  },
+  computed: {
+    ...mapGetters('auth', ['isAuth']),
   }
 }
 </script>

@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import apartments from '@/store/mock'
 import ApartmentCard from "@/components/apartment-card.vue"
 import UserExpansionBody from "@/components/card/user-expansion-body.vue"
+import {mapGetters} from 'vuex'
 
 export default {
     components: {
@@ -23,36 +23,23 @@ export default {
     },
     props: {
         id: {
-            // type: Number,
             required: true,
         },
     },
+    methods: {
+        ...mapGetters(['apartmentById'])
+    },
     created(){
-        this.initializeApartment(this.id)
+        this.apartment = this.apartmentById()(this.id)
     },
     data() {
         return {
             apartment: {},
-            apartments,
-            user: {
-                username:"username",
-                email:"email",
-                phone: "phone",
-            },
         }
-    },
-    methods:{
-        initializeApartment() {
-            this.apartment = this.apartments.find(el => el.id.toString() === this.id.toString())
-
-            if(!this.apartment) {
-                this.$router.push({name: '404-not-found'})
-            }
-        },
     },
     watch: {
         id(newId){
-            this.initializeApartment(newId)
+            this.apartment = this.apartmentById()(newId)
         }
     }
 }

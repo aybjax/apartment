@@ -26,6 +26,7 @@ const routes = [
   {
     path: '/apartments',
     name: 'apartments-list',
+    props: route => ({ userId: route.query.id }),
     component: ApartmentsList,
   },
   {

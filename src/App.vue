@@ -1,27 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-app-bar-title>
-          <v-app-bar-nav-icon>
-            <v-btn small fab color="primary" depressed
-              router :to="{name:'landing-page'}"
-            >
-              <v-icon large>
-                home
-              </v-icon>
-            </v-btn>
-          </v-app-bar-nav-icon>
-        </v-app-bar-title>
-      </div>
-
-      <v-spacer></v-spacer>
-
-    </v-app-bar>
-
+    <header-navbar></header-navbar>
     <v-main>
       <transition name="route" mode="out-in">
         <router-view></router-view>
@@ -41,16 +20,18 @@
 </template>
 
 <script>
+import HeaderNavbar from '@/components/header-navbar'
+
 
 export default {
   name: 'App',
 
   components: {
-
+    HeaderNavbar,
   },
 
   data: () => ({
-    //
+    
   }),
 };
 </script>

@@ -5,20 +5,36 @@
         ></apartment-card>
     </v-container>
 </template>
-
-
 <script>
-import apartments from "@/store/mock"
 import ApartmentCard from "@/components/apartment-card.vue"
+import {mapGetters} from 'vuex'
 
 export default {
     components: {
        ApartmentCard,
     },
+    props: {
+        userId: {
+            default: null,
+        }
+    },
     data(){
         return {
-            apartments,
+            apartments: [],
         }
+    },
+    methods: {
+        ...mapGetters({
+            apartmentsList: 'apartments',
+        })
+    },
+    created(){
+        this.apartments = this.apartmentsList()(this.userId)
+    },
+    watch: {
+        userId(newId){
+            this.apartments = this.apartmentsList()(newId)
+        },
     },
 }
 
