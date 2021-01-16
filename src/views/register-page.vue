@@ -112,15 +112,18 @@
             :width="400"
         ></overlay-image>
 
+        <snack-bar :title='title' :show="showSnackbar"
+            @close-snackbar="showSnackbar = false" :route="route"
+        ></snack-bar>
     </v-container>
 </template>
 
 <script>
 import OverlayImage from '@/components/form-image/overlay-image.vue'
 import ImageCard from '@/components/form-image/image-card.vue'
-
 import FormMixin from '@/mixins/form'
 import imageFieldMixin from '@/mixins/imageField'
+import SnackBar from '@/components/snackBar'
 
 export default {
     mixins: [
@@ -129,6 +132,7 @@ export default {
     components: {
         OverlayImage,
         ImageCard,
+        SnackBar,
     },
     data(){
         return {
@@ -144,6 +148,10 @@ export default {
             password: '',
             password2: '',
             url: 'http://localhost/api/register',
+
+            showSnackbar: false,
+            route: null,
+            title: '',
         }
     },
     methods: {
@@ -162,7 +170,9 @@ export default {
             }
         },
         successFnx(){
-            this.$router.push({name:'login-page'})
+            this.showSnackbar = true
+            this.title = 'registered successfully'
+            this.route = {name:'login-page'}
         },
     },
 }

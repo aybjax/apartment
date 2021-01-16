@@ -2,20 +2,22 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './modules/auth'
 import user from './modules/user'
-import apartments from './mock'
+import users from './users'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state(){
     return {
-      apartments: apartments,
-      counter: 0,
+      apartments: [],
     }
   },
   mutations: {
     add: (state, payload) => {
       state.apartments.push(payload.apartment)
+    },
+    addMany: (state, payload) => {
+      state.apartments.push(...payload.apartments)
     },
     remove: (state, payload) => {
       state.apartments = state.apartments.filter(el => el.id !== payload.id)
@@ -27,23 +29,39 @@ export default new Vuex.Store({
     },
     remove: (context, payload) => {
       context.commit('remove', payload)
-    }
+    },
+    initApartments: (context) => {
+      fetch('http://localhost/api/apartments')
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          }
+
+          throw new Error(response.statusText)
+        })
+        .then(apartments => {
+          context.commit('addMany', {apartments})
+
+          return 'ok'
+        }).catch( () => {
+        })
+    },
   },
   getters: {
     apartmentById: (state) => (id) => {
-      console.log(state)
       return state.apartments.find(ap => ap.id.toString() === id.toString())
     },
-    apartments: (state) => (userId) => {
-      if(userId) {
-        return state.apartments.filter(ap => ap.owner.id.toString() === userId.toString())
-      }
-
+    apartmentsOfUser: (state) => (userId) => {
+      
+      return state.apartments.filter(ap => ap.owner.id.toString() === userId.toString())
+    },
+    apartments: (state) => {
       return state.apartments
     },
   },
   modules: {
     auth,
     user,
+    users,
   }
 })

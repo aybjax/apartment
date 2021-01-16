@@ -21,7 +21,7 @@
 
 <script>
 import HeaderNavbar from '@/components/header-navbar'
-
+import {mapActions} from 'vuex'
 
 export default {
   name: 'App',
@@ -29,9 +29,11 @@ export default {
   components: {
     HeaderNavbar,
   },
-
-  data: () => ({
-    
-  }),
+  created(){
+    this.initApartments().catch((err) => {console.log(err)})
+  },
+  methods: {
+    ...mapActions(['initApartments'])
+  },
 };
 </script>

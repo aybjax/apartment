@@ -60,10 +60,6 @@ export default {
         sendData(){
             this.prepareForm()
 
-            console.log(this.form)
-
-            console.log(this.url)
-
             fetch(this.url, {
                 method: 'POST',
                 headers: this.headers,
@@ -78,12 +74,11 @@ export default {
             .then(data => {
                 this.successFnx(data)
             })
-            .catch(err => {
-                console.log(err)
+            .catch(() => {
             })
         },
         successFnx(resposeBody){
-            console.log(resposeBody)
+            return resposeBody
         },
     }
 }

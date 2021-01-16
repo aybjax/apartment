@@ -7,8 +7,8 @@
         show-arrows-on-hover
         >
             <v-carousel-item
-            v-for="(href, ind, nbr) in images"
-            :key="href + ind + nbr"
+            v-for="({path}, ind, nbr) in images"
+            :key="path + ind + nbr"
             >
                 <v-row
                     class="fill-height"
@@ -16,7 +16,7 @@
                     justify="center"
                     >
                     <v-img max-width="800"
-                        :src="href"
+                        :src="path"
                         ></v-img>
                 </v-row>
             </v-carousel-item>
@@ -28,6 +28,6 @@
 export default {
     props: [
         'images',
-    ]
+    ],
 }
 </script>

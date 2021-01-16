@@ -7,9 +7,6 @@
                 Зайдите на сайт
             </v-card-title>
 
-            <h1> {{isAuth ? 'auth' : 'not auth'}} </h1>
-            <h1> {{ name }} </h1>
-
             <v-card-text>
                 <v-form class="pa-10" ref="form">
                     <v-text-field
@@ -47,14 +44,22 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+        <snack-bar :title='title' :show="showSnackbar"
+            @close-snackbar="showSnackbar = false" :route="route"
+        ></snack-bar>
     </v-container>
 </template>
 
 <script>
 import FormMixin from '@/mixins/form'
 import { mapActions, mapGetters } from 'vuex'
+import SnackBar from '@/components/snackBar'
+
 
 export default {
+    components: {
+        SnackBar,
+    },
     mixins: [
         FormMixin,
     ],
@@ -64,6 +69,9 @@ export default {
             email: '',
             password: '',
             url: 'http://localhost/api/login',
+            showSnackbar: false,
+            route: null,
+            title: '',
         }
     },
     computed: {
@@ -89,12 +97,19 @@ export default {
                 headers: this.headers,
             })
             .then(msg => {
+                this.showSnackbar = true
                 if(msg === 'ok'){
-                    console.log(msg)
+                    this.title = 'logged in successfully'
+                    this.route = {name:'apartments-list'}
+                    
+                    return 
                 }
+
+                this.title = 'login failed'
             })
-            .catch(err => {
-                console.log(err)
+            .catch( () => {
+                this.showSnackbar = true
+                this.title = 'error occurred'
             })
         },
     }

@@ -1,9 +1,17 @@
 <template>
-    <v-container>
+<div>
+    <v-container v-if="apartments.length > 0">
         <apartment-card v-for="apartment in apartments" :key="apartment.id"
             v-bind="apartment"
         ></apartment-card>
     </v-container>
+
+    <v-container v-else>
+        <v-alert type="error">
+            No apartments available
+        </v-alert>
+    </v-container>
+</div>
 </template>
 <script>
 import ApartmentCard from "@/components/apartment-card.vue"
@@ -18,23 +26,13 @@ export default {
             default: null,
         }
     },
-    data(){
-        return {
-            apartments: [],
-        }
-    },
-    methods: {
-        ...mapGetters({
-            apartmentsList: 'apartments',
-        })
-    },
-    created(){
-        this.apartments = this.apartmentsList()(this.userId)
-    },
     watch: {
-        userId(newId){
-            this.apartments = this.apartmentsList()(newId)
-        },
+        // userId(newId){
+        //     this.apartments = this.apartmentsList()(newId)
+        // },
+    },
+    computed: {
+        ...mapGetters(['apartments'])
     },
 }
 

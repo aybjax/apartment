@@ -26,7 +26,7 @@
                     </v-col>
             </v-row>
         </v-expansion-panel-content>
-        <v-expansion-panel-header color="accent" disable-icon-rotate>
+        <v-expansion-panel-header color="accent" disable-icon-rotate @click="forclick">
             <v-row>
                 <v-col>
                     <v-btn block>
@@ -47,8 +47,14 @@
 
 <script>
 export default {
-    props: [
-        "username", "phone", "email"
-    ]
+    props: {
+        username: String,
+        phone: String,
+        email: String,
+        forclick: {
+            type: Function,
+            default: ()=>{}
+        }
+    },
 }
 </script>

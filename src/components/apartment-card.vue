@@ -92,7 +92,7 @@ export default {
             type: Boolean,
         },
         price: {
-            type: Number,
+            type: String,
             required: true,
         }
     },
