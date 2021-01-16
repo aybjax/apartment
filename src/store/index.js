@@ -13,19 +13,19 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    add: (state, payload) => {
-      state.apartments.push(payload.apartment)
+    addApartment: (state, apartment) => {
+      state.apartments.push(apartment)
     },
-    addMany: (state, payload) => {
-      state.apartments.push(...payload.apartments)
+    addApartments: (state, apartments) => {
+      state.apartments.push(...apartments)
     },
     remove: (state, payload) => {
       state.apartments = state.apartments.filter(el => el.id !== payload.id)
     },
   },
   actions: {
-    add: (context, payload) => {
-      context.commit('add', payload)
+    addApartment: (context, apartment) => {
+      context.commit('addApartment', apartment)
     },
     remove: (context, payload) => {
       context.commit('remove', payload)
@@ -40,7 +40,7 @@ export default new Vuex.Store({
           throw new Error(response.statusText)
         })
         .then(apartments => {
-          context.commit('addMany', {apartments})
+          context.commit('addApartments', apartments)
 
           return 'ok'
         }).catch( () => {

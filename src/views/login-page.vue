@@ -8,7 +8,8 @@
             </v-card-title>
 
             <v-card-text>
-                <v-form class="pa-10" ref="form">
+                <keep-alive>
+                    <v-form class="pa-10" ref="form">
                     <v-text-field
                         v-model="email"
                         :rules="emailRules"
@@ -24,6 +25,7 @@
                         required
                     ></v-text-field>
                 </v-form>
+                </keep-alive>
             </v-card-text>
             <v-card-actions class="d-flex justify-space-around align-center pb-3">
                 <v-btn large @click="submit">
@@ -44,8 +46,8 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <snack-bar :title='title' :show="showSnackbar"
-            @close-snackbar="showSnackbar = false" :route="route"
+        <snack-bar :snackTitle='snackTitle' :show="showSnackbar" :snackColor="snackColor"
+            @close-snackbar="showSnackbar = false" :snackRoute="snackRoute"
         ></snack-bar>
     </v-container>
 </template>
@@ -53,12 +55,10 @@
 <script>
 import FormMixin from '@/mixins/form'
 import { mapActions, mapGetters } from 'vuex'
-import SnackBar from '@/components/snackBar'
 
 
 export default {
     components: {
-        SnackBar,
     },
     mixins: [
         FormMixin,
@@ -70,8 +70,9 @@ export default {
             password: '',
             url: 'http://localhost/api/login',
             showSnackbar: false,
-            route: null,
-            title: '',
+            snackRoute: null,
+            snackTitle: '',
+            snackColor: '',
         }
     },
     computed: {
@@ -89,28 +90,25 @@ export default {
                 })
             this.headers['Content-Type'] = 'application/json'
         },
-        sendData(){
-            this.prepareForm()
+        
+        successFnx(data) {
+            this['auth/setAuth'](data)
+            // snackbar stuff
+            this.showSnackbar = true
+            this.snackTitle = 'logged in successfully'
+            this.snackRoute = {name:'apartments-list'}
+            this.snackColor = 'green'
+        },
+        failFnx(err) {
+            this.showSnackbar = true
+            this.snackColor = 'red'
 
-            this['auth/setAuth']({
-                body: this.form,
-                headers: this.headers,
-            })
-            .then(msg => {
-                this.showSnackbar = true
-                if(msg === 'ok'){
-                    this.title = 'logged in successfully'
-                    this.route = {name:'apartments-list'}
-                    
-                    return 
-                }
+            if (err === 'nok'){
+                this.snackTitle = 'login failed'
+                return
+            }
 
-                this.title = 'login failed'
-            })
-            .catch( () => {
-                this.showSnackbar = true
-                this.title = 'error occurred'
-            })
+            this.snackTitle = 'server error'
         },
     }
 }

@@ -112,8 +112,8 @@
             :width="400"
         ></overlay-image>
 
-        <snack-bar :title='title' :show="showSnackbar"
-            @close-snackbar="showSnackbar = false" :route="route"
+        <snack-bar :snackTitle='snackTitle' :show="showSnackbar"
+            @close-snackbar="showSnackbar = false" :snackRoute="snackRoute"
         ></snack-bar>
     </v-container>
 </template>
@@ -123,7 +123,6 @@ import OverlayImage from '@/components/form-image/overlay-image.vue'
 import ImageCard from '@/components/form-image/image-card.vue'
 import FormMixin from '@/mixins/form'
 import imageFieldMixin from '@/mixins/imageField'
-import SnackBar from '@/components/snackBar'
 
 export default {
     mixins: [
@@ -132,7 +131,6 @@ export default {
     components: {
         OverlayImage,
         ImageCard,
-        SnackBar,
     },
     data(){
         return {
@@ -150,8 +148,9 @@ export default {
             url: 'http://localhost/api/register',
 
             showSnackbar: false,
-            route: null,
-            title: '',
+            snackRoute: null,
+            snackTitle: '',
+            color: '',
         }
     },
     methods: {
@@ -171,8 +170,20 @@ export default {
         },
         successFnx(){
             this.showSnackbar = true
-            this.title = 'registered successfully'
-            this.route = {name:'login-page'}
+            this.color = 'green'
+            this.snackTitle = 'registered successfully'
+            this.snackRoute = {name:'login-page'}
+        },
+        failFnx(err){
+            this.showSnackbar = true
+            this.color = 'red'
+            
+            if(err === 'nok') {
+                this.snackTitle = 'registering failed'
+                return
+            }
+
+            this.snackTitle = 'server error'
         },
     },
 }

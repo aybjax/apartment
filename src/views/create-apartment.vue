@@ -113,6 +113,10 @@
         <overlay-image :img="img" :imageOverlay="imageOverlay" :width="400"
             :cancelImage="cancelImage" :closeOverlay="closeOverlay"
         ></overlay-image>
+
+        <snack-bar :snackTitle='snackTitle' :show="showSnackbar"
+            @close-snackbar="showSnackbar = false" :snackRoute="snackRoute"
+        ></snack-bar>
     </v-container>
 </template>
 
@@ -120,6 +124,7 @@
 import FormMixin from '@/mixins/form'
 import ImageFieldMixin from '@/mixins/imageField'
 import OverlayImage from '@/components/form-image/overlay-image'
+import {mapActions} from 'vuex'
 
 export default {
     mixins: [
@@ -140,9 +145,15 @@ export default {
             apartment: '',
             imageList: [],
             url: 'http://localhost/api/register-apartment',
+
+            showSnackbar: false,
+            snackRoute: null,
+            snackTitle: '',
+            snackColor: '',
         }
     },
     methods: {
+        ...mapActions(['addApartment']),
         prepareForm(){
             this.form = new FormData()
             this.form.append('title', this.title)
@@ -161,7 +172,29 @@ export default {
             }
 
             return "pick and image"
-        }
-    }
+        },
+        successFnx(data){
+            this.addApartment(data)
+
+            this.showSnackbar = true
+            this.color = 'green'
+            this.snackTitle = 'registered successfully'
+            this.snackRoute = {name:'apartment-detail', params:{id: data.id}}
+
+            console.log(this.$store.state.apartments)
+        },
+        failFnx(err){
+            this.showSnackbar = true
+            this.color = 'red'
+            
+            if(err === 'nok') {
+                this.snackTitle = 'registering failed'
+                return
+            }
+
+            this.snackTitle = 'server error'
+        },
+    },
+
 }
 </script>

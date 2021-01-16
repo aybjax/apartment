@@ -26,27 +26,11 @@ export default {
         },
     },
     actions: {
-        setAuth(context, {headers, body}) {
-            return fetch('http://localhost/api/login', {
-                method: 'POST',
-                headers,
-                body,
-            }).then( response => {
-                if (response.ok){
-                    return response.json()
-                }
-                
-                throw new Error(response.statusText)
-            }).then (data => {
-                // set auth
-                context.commit('setAuth', data.token_info)
-                //set user
-                context.commit('user/setUser', data.user_info, {root: true})
-
-                return "ok"
-            }).catch(err => {
-                return(err)
-            })
+        setAuth(context, payload) {
+            // set auth
+            context.commit('setAuth', payload.token_info)
+            //set user
+            context.commit('user/setUser', payload.user_info, {root: true})
         },
         deleteAuth(context) {
             context.commit('deleteAuth')

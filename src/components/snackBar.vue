@@ -1,9 +1,9 @@
 <template>
-    <v-snackbar v-model="show">
-        {{title}}
+    <v-snackbar v-model="show" :color="snackColor">
+        {{snackTitle}}
         <template v-slot:action="{ attrs }">
             <v-btn
-                color="pink"
+                color="white"
                 text
                 v-bind="attrs"
                 @click="close"
@@ -21,13 +21,20 @@ export default {
             type: Boolean,
             default: false,
         },
-        title: {
+        snackTitle: {
             type: String,
             required: true,
         },
-        route: {
+        snackRoute: {
             default: null
         },
+        snackRouteMethod: {
+            default: 'replace'
+        },
+        snackColor: {
+            type: String,
+            default: 'deep-purple accent-4'
+        }
     },
     emits: ['close-snackbar'],
     methods: {
@@ -41,8 +48,8 @@ export default {
                 const to = setTimeout(()=>{
                     this.$emit('close-snackbar')
                     clearTimeout(to)
-                   if( this.route ) {
-                        this.$router.push(this.route)
+                   if( this.snackRoute ) {
+                        this.$router[this.snackRouteMethod](this.snackRoute)
                    }
                 }, 1000)
             }

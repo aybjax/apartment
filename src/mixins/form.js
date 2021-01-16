@@ -1,4 +1,5 @@
 import {notEmptyRule, psRules, emailRule, phoneRegex} from '@/utils/inputRules'
+import fetcher from '@/utils/fetcher'
 
 const passwordCheck = [
     notEmptyRule,
@@ -9,7 +10,9 @@ export default {
     data(){
         return {
             valid: false,
+            notSend:false,
             headers:{},
+            form: {},
             usernameRules: [
                 notEmptyRule,
             ],
@@ -58,27 +61,35 @@ export default {
             this.sendData()
         },
         sendData(){
+            if(this.notSend) {
+                return
+            }
+
             this.prepareForm()
 
-            fetch(this.url, {
+            fetcher(this.url, {
                 method: 'POST',
                 headers: this.headers,
                 body: this.form,
-            })
+            }, this.$store.getters)
             .then(res => {
                 if(res.ok)
                     return res.json()
                 
-                return res.statusText
+                throw new Error('nok')
             })
             .then(data => {
                 this.successFnx(data)
             })
-            .catch(() => {
+            .catch((err) => {
+                this.failFnx(err)
             })
         },
         successFnx(resposeBody){
             return resposeBody
         },
+        failFnx(err){
+            return err
+        }
     }
 }

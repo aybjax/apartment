@@ -13,25 +13,25 @@ export default {
         }
     },
     mutations: {
-        addOne(state, user){
+        addUser(state, user){
             state.users.push(user)
         },
-        addMany(state, users){
+        addUsers(state, users){
             state.users.concat(users)
         },
-        delete(state, payload){
+        deleteUser(state, payload){
             state = state.users.filter(user => user.id !== payload.id)
         },
     },
     actions: {
-        addOne(context, user) {
-            context.commit('addOne', user)
+        addUser(context, user) {
+            context.commit('addUser', user)
         },
-        addMany(context, users) {
-            context.commit('addMany', users)
+        addUsers(context, users) {
+            context.commit('addUsers', users)
         },
-        delete(context, payload) {
-            context.commit('delete', payload)
+        deleteUser(context, payload) {
+            context.commit('deleteUser', payload)
         },
         getUserPromiseById: (context, id) => {
             const user = context.getters.users.find(user => {
@@ -52,7 +52,7 @@ export default {
                     throw new Error('failed')
                 })
                 .then( user => {
-                    context.dispatch('addOne', user)
+                    context.dispatch('addUser', user)
 
                     return user
                 })

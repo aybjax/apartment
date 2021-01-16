@@ -22,6 +22,6 @@ export default function(url, options, getters) {
     }
 
     options.headers = headers
-    
+
     return fetch(url, options)
 }
